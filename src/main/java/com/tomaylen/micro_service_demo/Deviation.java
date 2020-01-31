@@ -1,30 +1,29 @@
 package com.tomaylen.micro_service_demo;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Stream;
 
 public class Deviation {
 
 	private int numberOfValues = 3; // Number of integers from input data to be used in calculation of deviation
-	private int[] values;
-	private int[] greatest;
+	private int working;
 	private double output;
 
-	public Deviation(int[] values) {
+	public Deviation(String[] values) {
 
-		this.values = values;
-		Arrays.sort(this.values);
-		this.greatest = new int[numberOfValues];
+		this.working = Stream.of(values)
+			// Puts greatest values first
+			.sorted(Collections.reverseOrder())
+			// Turn to an intStream
+			.mapToInt(Integer::parseInt)
+			// Only deal with the greatest numbers, discard the rest
+			.limit(numberOfValues)
+			// square each number
+			.map(number -> number * number)
+			// Sum all the squares
+			.reduce(0, (number1, number2) -> number1 + number2);
 
-		for (int i = 0; i < numberOfValues; i++) {
-			this.greatest[i] = this.values[this.values.length - 1 - i];
-		}
-
-		int tally = 0;
-		for (int i = 0; i < numberOfValues; i++) {
-			tally += Math.pow(greatest[i], 2);
-		}
-
-		this.output = Math.sqrt(tally);
+		this.output = Math.sqrt(this.working);
 	}
 
 	public double getOutput() {
