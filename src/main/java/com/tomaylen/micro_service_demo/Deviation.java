@@ -7,7 +7,7 @@ public class Deviation {
 
 	private int numberOfValues = 3; // Number of integers from input data to be used in calculation of deviation
 	private int working;
-	private double output;
+	private double output = 0.00d;
 
 	public Deviation(String[] values) {
 
